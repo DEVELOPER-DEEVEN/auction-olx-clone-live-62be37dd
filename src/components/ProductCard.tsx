@@ -40,7 +40,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   };
 
   return (
-    <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+    <Card className="group glass hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer">
       <div className="relative">
         <img
           src={product.image}
@@ -51,30 +51,30 @@ const ProductCard = ({ product }: ProductCardProps) => {
           onClick={handleFavoriteClick}
           className={`absolute top-3 right-3 p-2 rounded-full transition-colors ${
             isProductFavorited 
-              ? 'bg-red-500 text-white' 
-              : 'bg-white/80 text-gray-600 hover:bg-white dark:bg-gray-800/80 dark:text-gray-300 dark:hover:bg-gray-800'
+              ? 'bg-black text-white dark:bg-white dark:text-black' 
+              : 'glass text-black dark:text-white hover:bg-black/10 dark:hover:bg-white/10'
           }`}
         >
           <Heart className={`h-4 w-4 ${isProductFavorited ? 'fill-current' : ''}`} />
         </button>
         {product.isNegotiable && (
-          <Badge className="absolute top-3 left-3 bg-green-500">
+          <Badge className="absolute top-3 left-3 bg-black text-white dark:bg-white dark:text-black">
             Negotiable
           </Badge>
         )}
       </div>
       <CardContent className="p-4">
-        <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition-colors">
+        <h3 className="font-semibold text-lg mb-2 group-hover:text-black/70 dark:group-hover:text-white/70 transition-colors">
           {product.title}
         </h3>
-        <p className="text-2xl font-bold text-green-600 mb-2">
+        <p className="text-2xl font-bold text-black dark:text-white mb-2">
           {formatPrice(product.price)}
         </p>
-        <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm mb-2">
+        <div className="flex items-center text-black/60 dark:text-white/60 text-sm mb-2">
           <MapPin className="h-4 w-4 mr-1" />
           {product.location}
         </div>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
+        <p className="text-sm text-black/50 dark:text-white/50">
           Seller: {product.seller}
         </p>
       </CardContent>
