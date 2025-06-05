@@ -2,7 +2,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Heart, MapPin } from "lucide-react";
-import { useState } from "react";
+import { useFavorites } from "@/hooks/useFavorites";
 
 interface Product {
   id: number;
@@ -19,7 +19,17 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const [isFavorited, setIsFavorited] = useState(false);
+  const { isFavorite, addToFavorites, removeFromFavorites } = useFavorites();
+  const isProductFavorited = isFavorite(product.id);
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isProductFavorited) {
+      removeFromFavorites(product.id);
+    } else {
+      addToFavorites(product.id);
+    }
+  };
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-IN', {
@@ -38,17 +48,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
           className="w-full h-48 object-cover rounded-t-lg"
         />
         <button
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsFavorited(!isFavorited);
-          }}
+          onClick={handleFavoriteClick}
           className={`absolute top-3 right-3 p-2 rounded-full transition-colors ${
-            isFavorited 
+            isProductFavorited 
               ? 'bg-red-500 text-white' 
-              : 'bg-white/80 text-gray-600 hover:bg-white'
+              : 'bg-white/80 text-gray-600 hover:bg-white dark:bg-gray-800/80 dark:text-gray-300 dark:hover:bg-gray-800'
           }`}
         >
-          <Heart className={`h-4 w-4 ${isFavorited ? 'fill-current' : ''}`} />
+          <Heart className={`h-4 w-4 ${isProductFavorited ? 'fill-current' : ''}`} />
         </button>
         {product.isNegotiable && (
           <Badge className="absolute top-3 left-3 bg-green-500">
@@ -63,11 +70,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
         <p className="text-2xl font-bold text-green-600 mb-2">
           {formatPrice(product.price)}
         </p>
-        <div className="flex items-center text-gray-500 text-sm mb-2">
+        <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm mb-2">
           <MapPin className="h-4 w-4 mr-1" />
           {product.location}
         </div>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-gray-600 dark:text-gray-400">
           Seller: {product.seller}
         </p>
       </CardContent>
